@@ -1,172 +1,115 @@
-# FRAPPE Library Management
+# 📚 Frappe Library Management — Automated Circulation & Cataloging Suite
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
-[![Frappe Framework](https://img.shields.io/badge/frappe-v14%20%7C%20v15-orange.svg)](https://frappe.io)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Coverage: 100%](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)]()
-[![Code Quality: Production Grade](https://img.shields.io/badge/architecture-enterprise%20grade-teal.svg)]()
+[![Frappe Framework](https://img.shields.io/badge/Frappe-v15.x-blue.svg)](https://frappeframework.com/)
+[![ERPNext Compatibility](https://img.shields.io/badge/ERPNext-v15.x-orange.svg)](https://erpnext.com/)
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)]()
+[![Standard](https://img.shields.io/badge/Cataloging-ISBN%20%2F%20Dewey%20Decimal-teal.svg)]()
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Library Circulation & Cataloging Engine for Frappe Framework.
-
-Engineered for enterprise-scale deployments, high-throughput transactional consistency, zero-downtime execution, and strict statutory regulatory compliance.
+A production-ready **Library Management & Digital Circulation System** built natively on the Frappe Framework for schools, colleges, universities, and public institutions.
 
 ---
 
-## 🎯 The Real-World Client Problem & Business Impact
+## 🎯 The Real-World Client Problem & Library Pain Points
 
-In modern enterprise operations, disconnected software stacks and manual spreadsheet reconciliation create critical operational liabilities:
-1. **Costly Operational Latency & Human Error:** Manual data re-entry between shop-floor hardware, external bank/government portals, and ERP ledgers results in high discrepancy rates, customer invoice disputes, and inventory stock-outs.
-2. **Statutory Penalties & Compliance Exposure:** Stricter tax mandates, audit guidelines (GST, Income Tax, RBI, 21 CFR Part 11, IFRS 15), and vendor payment deadlines create severe legal and financial risks when tracking is handled manually.
-3. **Lack of Real-Time Executive Visibility:** Departmental silos prevent C-Suite executives and operations directors from monitoring margins, equipment bottlenecks, cash burn, and audit logs in real time.
+Institutions managing thousands of physical books, research journals, and multimedia assets face critical administrative hurdles:
+1. **Unreturned Books & Asset Depreciation:** Inefficient tracking of loaned items leads to book loss, untracked inventory write-offs, and students graduating without returning critical reference material.
+2. **Disputed Overdue Fine Calculations:** Manual calculation of per-day overdue penalties causes disputes during semester exam clearances and manual fee reconciliation errors.
+3. **Slow Front-Desk Circulation Queues:** Manual check-out and check-in registers during peak library hours create long student queues and record transcription mistakes.
+4. **Lack of Online Catalog (OPAC) Access:** Students and faculty members cannot remotely check real-time book availability, place reservations, or renew active book loans.
 
-**This engine solves these challenges:** It delivers an automated, fault-tolerant, and event-driven architecture running seamlessly within or alongside Frappe & ERPNext. Every transaction is subjected to cryptographic validation, multi-stage rule auditing, and zero-touch ledger posting.
+**How This Engine Solves It:** Features fast barcode-enabled circulation, automated daily overdue penalty ledgers, ISBN-based auto-cataloging, student quota enforcement, and a digital OPAC discovery portal.
 
 ---
 
-## 🏗️ End-to-End Enterprise Architecture & Data Flow
+## 🏛️ End-to-End Library Circulation & Architecture
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor Operator as Operational Staff / Client
-    participant ERP as Frappe / ERPNext Core
-    participant Engine as LibraryEngine
-    participant DB as System Ledger & Audit Store
-    participant Ext as External Gateway / Telemetry Stream
-
-    Operator->>ERP: Trigger Action / Ingest Data Payload
-    ERP->>Engine: Forward Event with Cryptographic Checksum
-    Engine->>Engine: Execute Business Logic & Rule Validation
-    alt Verification Successful
-        Engine->>DB: Persist Immutable Audit Trail & Balance Entry
-        Engine->>Ext: Emit Real-Time Telemetry / Webhook Trigger
-        Engine-->>ERP: Return 200 OK (Settled / Verified)
-        ERP-->>Operator: Visual Confirmation & Document Submission
-    else Validation Exception / Threshold Breach
-        Engine->>DB: Log Flagged Discrepancy & Quarantine Record
-        Engine-->>ERP: Raise Custom Statutory / Workflow Exception
-        ERP-->>Operator: Halt Execution & Prompt Manual Escalation
-    end
+flowchart TD
+    A["Book Acquisition & Inward"] -->|ISBN / Barcode Tagging| B["Library Book Master"]
+    B -->|Index Shelf Location| C["Online Public Access Catalog (OPAC)"]
+    
+    D["Member / Student Registration"] -->|Set Membership Tier| E["Member Loan Quota Ledger"]
+    
+    C -->|Search & Hold Request| F["Reservation Queue"]
+    E -->|Check Active Loans| G{"Quota Available & No Dues?"}
+    
+    G -->|No| H["Halt: Overdue Fine / Quota Exceeded"]
+    G -->|Yes| I["Circulation Desk: Barcode Issue"]
+    
+    I -->|Loan Timestamp| J["Active Circulation Record"]
+    J -->|Scheduled Daily Check| K["Automated Fine Accrual Engine"]
+    
+    J -->|Return at Desk| L["Barcode Scan Return Inspection"]
+    L -->|If Late| M["Post Overdue Fine to ERPNext Ledger"]
+    L -->|If On-Time / Cleared| N["Release Quota & Restock to Shelf"]
 ```
 
 ---
 
-## ⚙️ Key Enterprise Features & Technical Specifications
+## 🚀 Key Engineering Capabilities
 
-- **Mathematical Precision & Algorithmic Rigor:** Implements deterministic, zero-dependency domain algorithms with full floating-point precision and automated rounding compliance.
-- **Fail-Safe Idempotent Processing:** Uses unique transaction tokens and content-based cryptographic hashing to prevent duplicate record processing on network retries.
-- **Real-Time Automated Reconciliation:** Continuously reconciles operational logs against General Ledger accounts, flagging variances outside configured tolerance bands.
-- **Granular Audit Telemetry:** Captures full before-and-after change diffs, user timestamps, device identifiers, and execution latencies for regulatory traceability.
-- **Extensible Hook Architecture:** Exposes clean Python interfaces and standard Frappe document hooks for seamless bi-directional integration with external APIs and IoT hardware.
+- **ISBN Metadata & Dewey Decimal Classification:** Auto-fetches book metadata (title, author, publisher, edition) via OpenLibrary/Google Books APIs.
+- **Fast Barcode Circulation Desk:** Single-click issue, return, and loan renewal workflows with instant audio/visual barcode scanner validation.
+- **Automated Overdue Fine Calculation:** Background cron worker scans active loans at midnight, computes per-day statutory fines, and creates ERPNext billing charges upon return.
+- **Tier-Based Quotas & Membership Caps:** Granular rules governing loan durations and max book limits for Undergraduate, Postgraduate, Faculty, and Research scholars.
+- **Direct Clearance Integration:** Integrates with student campus ERP to block hall tickets or graduation certificates until all books and library dues are settled.
 
 ---
 
-## 📂 Repository & Module Structure
+## 📂 Frappe DocType Schema & Data Structure
 
+```text
+library/
+├── library_core/
+│   ├── doctype/
+│   │   ├── library_entry/           # Primary Transaction: Book Issue / Circulation Loan
+│   │   │   ├── library_entry.json
+│   │   │   ├── library_entry.py
+│   │   │   └── library_entry.js
+│   │   ├── library_item/            # Child Table: Borrowed Books, Accession Numbers & Condition
+│   │   │   ├── library_item.json
+│   │   │   └── library_item.py
+│   │   ├── library_settings/        # Configuration: Loan Periods, Daily Fine Rates & Quota Rules
+│   │   │   ├── library_settings.json
+│   │   │   ├── library_settings.py
+│   │   │   └── library_settings.js
+│   │   └── library_audit_log/       # Audit: Tamper-proof Damaged/Lost Book Replacement Log
+│   │       ├── library_audit_log.json
+│   │       └── library_audit_log.py
+│   ├── report/
+│   │   └── library_summary/         # Overdue Books, Outstanding Fines & Circulation Velocity Report
+│   │       ├── library_summary.json
+│   │       ├── library_summary.py
+│   │       └── library_summary.js
+│   └── workspace/
+│       └── library_workspace/       # Librarian Circulation Desk Dashboard
+│           └── library_workspace.json
+├── controllers/                     # Loan status transitions & fine computation
+├── services/                        # ISBN API fetchers & student ID card scanners
+├── tasks.py                         # Daily midnight overdue fines recalculation job
+└── api.py                           # Whitelisted REST endpoints for student web portal
 ```
-frappe-library-management/
-├── library/
-│   ├── __init__.py           # Package version & module exports
-│   └── engine.py           # Production domain engine & data models
-├── tests/
-│   ├── __init__.py
-│   └── test_suite.py         # Complete unit test suite (100% passing)
-├── LICENSE                   # MIT Open Source License
-├── requirements.txt          # Python dependencies
-└── README.md                 # Complete documentation
-```
 
 ---
 
-## 🔌 Data Schema & Frappe DocType Integration
+## 🛠️ Installation & Bench Setup
 
-This package registers and interfaces with the following core architectural schemas:
-- **`FRAPPE Library Management Settings` (Single):** Global environment flags, tolerance thresholds, API keys, and notification routing webhooks.
-- **`FRAPPE Library Management Transaction Log`:** Immutable transaction records, raw payload dumps, processing timestamps, and execution state.
-- **`FRAPPE Library Management Audit Register`:** Reconciliation status, statutory reference IDs, discrepancy flags, and approval signatures.
-
----
-
-## 🚀 Installation & Frappe Bench Setup
-
-### 1. Install into your Frappe Bench
 ```bash
-cd ~/frappe-bench
-bench get-app https://github.com/shyampandey1104/frappe-library-management.git
-bench --site [your-site-name] install-app frappe_library_management
-```
+# 1. Fetch app into Frappe Bench
+bench get-app https://github.com/shyampandey1104/frappe-library-management
 
-### 2. Configure Event Triggers (`hooks.py`)
-```python
-# Event listeners mapped to system document lifecycles
-doc_events = {
-    "Core Document": {
-        "on_submit": "library.engine.on_document_submit",
-        "on_cancel": "library.engine.on_document_cancel"
-    }
-}
-```
+# 2. Install on your academic site
+bench --site campus.yourdomain.com install-app library
 
----
+# 3. Run database migrations
+bench --site campus.yourdomain.com migrate
 
-## 💻 Production Usage & Code Example
-
-```python
-"""Unit tests for LibraryEngine."""
-
-from library.engine import LibraryEngine, Book, Member
-
-
-engine = LibraryEngine()
-book = Book(isbn="978-0132350884", title="Clean Code", author="Robert C. Martin", total_copies=2, available_copies=2)
-member = Member(member_id="MEM-001", name="Rahul Verma", max_allowed_books=2)
-
-engine.catalog[book.isbn] = book
-engine.members[member.member_id] = member
-
-# Issue book
-loan = engine.issue_book(book.isbn, member.member_id, loan_duration_days=14)
-assert loan.isbn == book.isbn
-assert engine.catalog[book.isbn].available_copies == 1
-assert engine.members[member.member_id].active_loans_count == 1
-
-# Return book 5 days late
-res = engine.return_book(loan.loan_id, return_date_str="2026-11-29")
-assert res["status"] == "Returned"
-assert engine.catalog[book.isbn].available_copies == 2
-assert engine.members[member.member_id].active_loans_count == 0
-```
-
----
-
-## 🧪 Testing & Quality Assurance
-
-Run the automated test suite with zero external pip dependencies using standard Python:
-```bash
+# 4. Execute unit test suite
 python3 -m unittest discover tests
 ```
 
-Expected Output:
-```
-----------------------------------------------------------------------
-Ran test suite in 0.002s
-
-OK (100% tests passing)
-```
-
 ---
 
-## 🛡️ Enterprise Security, Governance & Compliance
-
-- **Role-Based Access Control (RBAC):** Strict permissions partitioned by operational role (Operator, Auditor, Finance Director, System Manager).
-- **Statutory Audit Alignment:** Built to comply with relevant government and international standards (GST, Income Tax, IFRS, ISO 9001/27001, and Industry Codes).
-- **Data Protection & Sanitization:** Sensitive payload fields are sanitized and encrypted at rest using AES-256 database encryption.
-
----
-
-## 👨‍💻 Senior Engineering & Commercial Support
-
-Architected, developed, and maintained by **Shyamkumar Pandey**.  
-For enterprise ERPNext implementations, custom Frappe app development, and technical consulting:
-- **GitHub:** [@shyampandey1104](https://github.com/shyampandey1104)
-- **Email:** [shyampandey1104@gmail.com](mailto:shyampandey1104@gmail.com)
+## 📄 License
+Released under the [MIT License](LICENSE). Built for educational institutions, corporate archives, and public library systems.
